@@ -55,6 +55,15 @@ jobs:
         # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
+    - name: Archive tool cache
+      run: |
+        cd "${{ runner.tool_cache }}"
+        tar -czf tool_cache.tar.gz *
+    - name: Upload tool cache artifact
+      uses: actions/upload-artifact@v3
+      with:
+        path: ${{runner.tool_cache}}/tool_cache.tar.gz
+
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, Go, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
@@ -75,3 +84,4 @@ jobs:
       uses: github/codeql-action/analyze@v2
       with:
         category: "/language:${{matrix.language}}"
+
